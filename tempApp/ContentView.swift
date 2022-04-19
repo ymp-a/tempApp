@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// 列挙型を試した
 enum Fruits: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
     case apple = "りんご"
