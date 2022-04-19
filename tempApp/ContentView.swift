@@ -41,11 +41,11 @@ struct ContentView: View {
 // https://capibara1969.com/1800/
 // ボタンの外観
 struct FloatingButton: View {
-    let gradientView = AngularGradient(
-        // 円錐式グラデーション
-        gradient: Gradient(colors: [Color(UIColor.blue), Color(UIColor.green)]),
-        center: .center,
-        angle: .degrees(0))
+    let gradientView = LinearGradient(
+        // ライナーグラデーション
+        gradient: Gradient(colors: [Color(UIColor.green), Color(UIColor.orange), Color(UIColor.blue)]),
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing)
 
     var body: some View {
         VStack {  // --- 1
