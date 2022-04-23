@@ -21,20 +21,20 @@ struct ContentView: View {
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
     var body: some View {
-        ZStack {
-            VStack {
-                NavigationView {
+        NavigationView {
+            ZStack {
+                VStack {
                     List {
                     }
                     .navigationTitle("メモ一覧")
                     .navigationBarTitleDisplayMode(.automatic)
-                } // NavigationViewここまで
-            } // VStack
-            Text("なし")
-                .font(.title)
-            FloatingButton()
-        } // ZStack
-    }
+                } // VStack
+                Text("なし")
+                    .font(.title)
+                FloatingButton()
+            } // ZStack
+        } // NavigationViewここまで
+    } // bosy
 } // struct MemoListsViewここまで
 
 // https://dev.classmethod.jp/articles/swiftui_floatingbutton_linkage_textfield/
