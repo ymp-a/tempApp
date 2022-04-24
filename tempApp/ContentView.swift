@@ -7,83 +7,78 @@
 
 import SwiftUI
 
-// グラデーションボタンと最前面への設置検証
 struct ContentView: View {
-    // 参照先 https://blog.personal-factory.com/2020/05/04/customize-navigationbar-in-ios13/
-    // メモ一覧部分を白背景にする
-    init() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.white
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-    }
-    var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    List {
-                    }
-                    .navigationTitle("メモ一覧")
-                    .navigationBarTitleDisplayMode(.automatic)
-                } // VStack
-                Text("なし")
-                    .font(.title)
-                FloatingButton()
-            } // ZStack
-        } // NavigationViewここまで
-    } // bosy
-} // struct MemoListsViewここまで
-
-// https://dev.classmethod.jp/articles/swiftui_floatingbutton_linkage_textfield/
-// https://capibara1969.com/1800/
-// ボタンの外観
-struct FloatingButton: View {
-    let gradientView = LinearGradient(
-        // ライナーグラデーション
-        gradient: Gradient(colors: [Color(UIColor.green), Color(UIColor.orange), Color(UIColor.blue)]),
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing)
+    // ボタンフラグを管理
+    @State private var isNextEnable: Bool = true
 
     var body: some View {
-        VStack {  // --- 1
-            Spacer()
-            HStack { // --- 2
-                Spacer()
-                Button(action: {
-                    print("Tapped!!") // --- 3
-                }, label: {
-                    Image(systemName: "plus")
-                        .foregroundColor(.white)
-                        .font(.system(size: 24)) // --- 4
-                })
-                .frame(width: 60, height: 60)
-                .background(gradientView)
-                .cornerRadius(30.0)
-                .shadow(color: .gray, radius: 3, x: 3, y: 3)
-                .padding(EdgeInsets(top: 0, leading: 0, bottom: 16.0, trailing: 16.0)) // --- 5
+        // 縦のレイアウト10ずつあけてオブジェクト配置する
+        VStack(spacing: 10) {
 
-            } // HStackここまで
+            // ■ボタンスタイルプロパティを使う書き方
+            // isNextEnableがtrueかfalseでテキスト表示を切り替える三項演算子を利用
+            // ボタン1　テキスト、ロール、アクションを先に記入する方法
+            Button("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))", role: .none, action: {
+                // ボタンタップでフラグオフ
+                isNextEnable = false
+            })
+            // テキストサイズ
+            .font(.largeTitle)
+            // 背景側がOSのアクセントカラー（青）に、文字色が白になる便利
+            // ボタン無効化すると色がライトグレーになる
+            .buttonStyle(.borderedProminent)
+            // ボタンのpaddingと丸みを(端末ごとに)自動調整してくれる便利
+            .controlSize(.regular)
+            // 1番目のボタン無効化(!enable)となっているのはtrue時に無効にしないため
+            .disabled(!isNextEnable)
+
+            // ボタン2 アクション先行入力の方法
+            Button(action: {
+                isNextEnable = false
+            }) {
+                Text("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))")
+                    // 文字サイズ
+                    .font(.largeTitle)
+                    // 文字の余白(top & bottom)
+                    .padding(.vertical, 5.5)
+                    // 文字の余白(trailing & leading)
+                    .padding(.horizontal, 10.0)
+                    // 文字色
+                    .foregroundColor(Color.white)
+                    // 三項演算子で背景色を管理
+                    .background(isNextEnable ? Color.orange: Color(UIColor.lightGray))
+                    // 角の丸みは高さに依存している
+                    .cornerRadius(10)
+            } // 2番目のボタンレイアウトここまで
+            // 2番目のボタン無効化
+            .disabled(!isNextEnable)
+
+            // ボタン3 アクション先行入力かつボタンスタイルプロパティで記入する方法
+            Button(action: {
+                isNextEnable = false
+            }) {
+                Text("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))")
+                // 文字サイズはどっちでもよさそう？
+                //   .font(.largeTitle)
+            } // 3番目のボタンレイアウト以下から
+            .font(.largeTitle)
+            // 背景側がOSのアクセントカラー（青）に、文字色が白になる便利
+            // ボタン無効化すると色がライトグレーになる
+            .buttonStyle(.borderedProminent)
+            // ボタンのpaddingと丸みを(端末ごとに)自動調整してくれる便利
+            .controlSize(.regular)
+            // 3番目のボタン無効化
+            .disabled(!isNextEnable)
+
+            Button("リセット", role: .none, action: {
+                // フラグリセット
+                isNextEnable = true
+            })
         } // VStackここまで
     } // bodyここまで
-    //    /// 背景グラデーションを作成する
-    //    private func backGroundColor() -> LinearGradient {
-    //        // 左上から右下にポイントを設定する。
-    //        let start = UnitPoint.init(x: 1, y: 1) // 左上(始点)
-    //        let end = UnitPoint.init(x: 0.5, y: 0) // 右下(終点)
-    //
-    //        // 「Color」は以前の「UIColor」からの変換もできるぞ！ 助かる。
-    //        let colors = Gradient(colors: [Color(UIColor.blue), Color(UIColor.green)])
-    //
-    //        let gradientColor = LinearGradient(gradient: colors, startPoint: start, endPoint: end)
-    //
-    //        return gradientColor
-    //    }
-} // FlontingButtonここまで
+} // ContentViewここまで
 
-struct MemoListsView_Previews: PreviewProvider {
+struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
