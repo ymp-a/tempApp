@@ -7,76 +7,29 @@
 
 import SwiftUI
 
+// カレンダーから日付を選択する
 struct ContentView: View {
-    // ボタンフラグを管理
-    @State private var isNextEnable: Bool = true
-
+    @State private var selectionDate = Date()
     var body: some View {
-        // 縦のレイアウト10ずつあけてオブジェクト配置する
-        VStack(spacing: 10) {
+        VStack {
+            Text("カレンダーから\n日付を選択する")
+                .font(.title)
+            // 何もdisplayedComponentsを指定しないとラベル、日付(.date)、時間(.hourAndMinute)が表示される
+            // カレンダー選択時の表記が混在するのはシミュレータバグ？実機では問題なし
+            DatePicker("ラベル部分",selection: $selectionDate, displayedComponents: .date)
+                // タップ時の選択方式を指定
+                .datePickerStyle(DefaultDatePickerStyle())
+                // フレーム幅でラベルの表記が変化、小さすぎるとラベル消滅するがDate部分は変化なし
+                .frame(width: 150, height: 200)
+                // ラベルを消す
+//                .labelsHidden()
+                // Dateテキスト色の変更セット
+                .colorInvert()
+                .colorMultiply(.blue)
 
-            // ■ボタンスタイルプロパティを使う書き方
-            // isNextEnableがtrueかfalseでテキスト表示を切り替える三項演算子を利用
-            // ボタン1　テキスト、ロール、アクションを先に記入する方法
-            Button("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))", role: .none, action: {
-                // ボタンタップでフラグオフ
-                isNextEnable = false
-            })
-            // テキストサイズ
-            .font(.largeTitle)
-            // 背景側がOSのアクセントカラー（青）に、文字色が白になる便利
-            // ボタン無効化すると色がライトグレーになる
-            .buttonStyle(.borderedProminent)
-            // ボタンのpaddingと丸みを(端末ごとに)自動調整してくれる便利
-            .controlSize(.regular)
-            // 1番目のボタン無効化(!enable)となっているのはtrue時に無効にしないため
-            .disabled(!isNextEnable)
-
-            // ボタン2 アクション先行入力の方法
-            Button(action: {
-                isNextEnable = false
-            }) {
-                Text("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))")
-                    // 文字サイズ
-                    .font(.largeTitle)
-                    // 文字の余白(top & bottom)
-                    .padding(.vertical, 5.5)
-                    // 文字の余白(trailing & leading)
-                    .padding(.horizontal, 10.0)
-                    // 文字色
-                    .foregroundColor(Color.white)
-                    // 三項演算子で背景色を管理
-                    .background(isNextEnable ? Color.orange: Color(UIColor.lightGray))
-                    // 角の丸みは高さに依存している
-                    .cornerRadius(10)
-            } // 2番目のボタンレイアウトここまで
-            // 2番目のボタン無効化
-            .disabled(!isNextEnable)
-
-            // ボタン3 アクション先行入力かつボタンスタイルプロパティで記入する方法
-            Button(action: {
-                isNextEnable = false
-            }) {
-                Text("Tap Me!!(\(isNextEnable ? "Enable": "Disable"))")
-                // 文字サイズはどっちでもよさそう？
-                //   .font(.largeTitle)
-            } // 3番目のボタンレイアウト以下から
-            .font(.largeTitle)
-            // 背景側がOSのアクセントカラー（青）に、文字色が白になる便利
-            // ボタン無効化すると色がライトグレーになる
-            .buttonStyle(.borderedProminent)
-            // ボタンのpaddingと丸みを(端末ごとに)自動調整してくれる便利
-            .controlSize(.regular)
-            // 3番目のボタン無効化
-            .disabled(!isNextEnable)
-
-            Button("リセット", role: .none, action: {
-                // フラグリセット
-                isNextEnable = true
-            })
-        } // VStackここまで
-    } // bodyここまで
-} // ContentViewここまで
+        }
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
