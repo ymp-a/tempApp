@@ -7,29 +7,56 @@
 
 import SwiftUI
 
-// カレンダーから日付を選択する
+// 参考 https://dev.classmethod.jp/articles/focusstate-keyboard/
+// @FocusStateとは、フォーカスが変更があった時にSwiftUIが更新する値を読み書きできるプロパティラッパーです。
 struct ContentView: View {
-    @State private var selectionDate = Date()
-    var body: some View {
-        VStack {
-            Text("カレンダーから\n日付を選択する")
-                .font(.title)
-            // 何もdisplayedComponentsを指定しないとラベル、日付(.date)、時間(.hourAndMinute)が表示される
-            // カレンダー選択時の表記が混在するのはシミュレータバグ？実機では問題なし
-            DatePicker("ラベル部分",selection: $selectionDate, displayedComponents: .date)
-                // タップ時の選択方式を指定
-                .datePickerStyle(DefaultDatePickerStyle())
-                // フレーム幅でラベルの表記が変化、小さすぎるとラベル消滅するがDate部分は変化なし
-                .frame(width: 150, height: 200)
-                // ラベルを消す
-//                .labelsHidden()
-                // Dateテキスト色の変更セット
-                .colorInvert()
-                .colorMultiply(.blue)
-
-        }
+    // フォーカスが当たるTextFieldを判断するためのenumを作成します。
+    // @FocusStateの定義にもある通り、ValueはHashableである必要がある為、準拠しています。
+    enum Field: Hashable {
+        case title
+        case message
     }
-}
+
+    @State private var titleText = ""
+    @State private var messageText = ""
+    // @FocusStateを付与した値をnilにするとキーボードが閉じてくれるのでオプショナルにしています。
+    @FocusState private var focusedField: Field?
+
+    var body: some View {
+
+        VStack {
+            // TextFieldにフォーカスが当たった時に@FocusStateを更新する
+            TextField("タイトル", text: $titleText)
+                .padding()
+                .border(.black)
+                .padding()
+                // 第一引数には@FocusStateの値を渡し、第二引数には今回はどのfocusedFieldを指しているのかを渡しています。
+                .focused($focusedField, equals: .title)
+                .onTapGesture {
+                    focusedField = .title
+                }
+
+            TextField("メッセージ", text: $messageText)
+                .padding()
+                .border(.black)
+                .padding()
+                .focused($focusedField, equals: .message)
+                // キーボードが一度閉じてしまう問題はフィールドからフィールドへのフォーカス移動にはfocusedField指定で対応してる
+                .onTapGesture {
+                    focusedField = .message
+                }
+        } // VStackここまで
+        // タップフォーカス内の範囲を設定している
+        .frame(width: UIScreen.main.bounds.width,
+               height: UIScreen.main.bounds.height)
+        // 範囲内ならタップでできるようになっている
+        .contentShape(RoundedRectangle(cornerRadius: 10))
+        // タップした時の処理
+        .onTapGesture {
+            focusedField = nil
+        } // onTapGesture
+    } // bodyここまで
+} // ContentViewここまで
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
