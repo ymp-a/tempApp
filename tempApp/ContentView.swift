@@ -28,7 +28,7 @@ struct ContentView: View {
             // TextFieldにフォーカスが当たった時に@FocusStateを更新する
             TextField("タイトル", text: $titleText)
                 .padding()
-                .border(.black)
+                .border(Color("borderColor"))
                 .padding()
                 // 第一引数には@FocusStateの値を渡し、第二引数には今回はどのfocusedFieldを指しているのかを渡しています。
                 .focused($focusedField, equals: .title)
@@ -38,7 +38,7 @@ struct ContentView: View {
 
             TextField("メッセージ", text: $messageText)
                 .padding()
-                .border(.black)
+                .border(Color("borderColor"))
                 .padding()
                 .focused($focusedField, equals: .message)
                 // キーボードが一度閉じてしまう問題はフィールドからフィールドへのフォーカス移動にはfocusedField指定で対応してる
