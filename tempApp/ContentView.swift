@@ -7,33 +7,19 @@
 
 import SwiftUI
 
-enum Fruits: String, CaseIterable, Identifiable {
-    var id: String { self.rawValue }
-    case apple = "りんご"
-    case banana = "ばなな"
-    case grape = "ぶどう"
-}
-
 struct ContentView: View {
-    // enum型を宣言＆初期化している
-    @State var fruit: Fruits = .apple
+    // 画像タップで画像をAPIから取得する
 
     var body: some View {
-        // ピッカー時にも必須？
+        // 画像配置
         VStack {
-            // "picker名",selection:enum変数を指定
-            Picker("Select Fruit", selection: $fruit) {
-                // enum内の全要素分繰り返す
-                // id: \.selfの部分で.appleとかが初期化されてる気がする
-                ForEach(Fruits.allCases, id: \.self) { value in
-                    Text(value.rawValue)
-                        // picker選択できるようにタグ付け
-                        .tag(value)
-                }
-            }
-            // ホイールピッカースタイル
-            .pickerStyle(WheelPickerStyle())
-        }
+            Image("cat")
+                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+            Image("cat")
+                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+            Image("cat")
+                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+        } // VStackここまで
     }
 }
 
