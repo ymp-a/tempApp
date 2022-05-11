@@ -12,13 +12,17 @@ struct ContentView: View {
 
     var body: some View {
         // 画像配置
-        VStack {
+        VStack(spacing: 50) {
             Image("cat")
-                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+                .resizable()
+                .frame(width: 100, height: 100)
+                .cornerRadius(30)
             Image("cat")
-                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+                .resizable()
+                .frame(width: 100, height: 100)
             Image("cat")
-                .resizable(capInsets: EdgeInsets(top: -5.0, leading: -5.0, bottom: -5.0, trailing: -5.0))
+                .resizable()
+                .frame(width: 100, height: 100)
         } // VStackここまで
     }
 }
