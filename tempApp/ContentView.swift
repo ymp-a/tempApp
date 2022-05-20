@@ -8,24 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
-    // 画像タップで画像をAPIから取得する
-
     var body: some View {
-        // 画像配置
-        VStack(spacing: 50) {
-            Image("cat")
-                .resizable()
-                .frame(width: 100, height: 100)
-                .cornerRadius(30)
-            Image("cat")
-                .resizable()
-                .frame(width: 100, height: 100)
-            Image("cat")
-                .resizable()
-                .frame(width: 100, height: 100)
-        } // VStackここまで
-    }
-}
+        NavigationView {
+            List(1..<20) { index in
+                NavigationLink(destination: Text("\(index)番目のView")) {
+                    Text("\(index)行目")
+                }
+            }
+            .navigationTitle("NavigationView")
+            .navigationBarTitleDisplayMode(.inline)
+
+            .toolbar {
+                /// ナビゲーションバー左
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {}) {
+                        Image(systemName: "magnifyingglass")
+                    }
+                }
+
+                /// ナビゲーションバー右１
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {}) {
+                        Image(systemName: "trash")
+                    }
+                }
+
+                /// ナビゲーションバー右２
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Cancel") {}
+                }
+
+                /// ボトムバー
+                ToolbarItem(placement: .bottomBar) {
+                    Button(action: {}) {
+                        Label("送信", systemImage: "paperplane")
+                    }
+                } // ToolbarItemここまで
+            } // .toolbarここまで
+        } // NavigationViewここまで
+    } // bodyここまで
+} // ContentViewここまで
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
