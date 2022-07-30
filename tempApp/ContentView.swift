@@ -9,43 +9,24 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationView {
-            List(1..<20) { index in
-                NavigationLink(destination: Text("\(index)番目のView")) {
-                    Text("\(index)行目")
+        TabView{
+                    Text("1")
+                        .tabItem {
+                            Image(systemName: "message.fill")
+                            Text("メッセージ")
+                        }
+                    Text("2")
+                        .tabItem {
+                            Image(systemName: "magnifyingglass")
+                            Text("さがす")
+                        }
+                    Text("3")
+                        .tabItem {
+                            Image(systemName: "face.smiling.fill")
+                            Text("スタンプ")
+                        }
                 }
-            }
-            .navigationTitle("NavigationView")
-            .navigationBarTitleDisplayMode(.inline)
-
-            .toolbar {
-                /// ナビゲーションバー左
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: {}) {
-                        Image(systemName: "magnifyingglass")
-                    }
-                }
-
-                /// ナビゲーションバー右１
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {}) {
-                        Image(systemName: "trash")
-                    }
-                }
-
-                /// ナビゲーションバー右２
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Cancel") {}
-                }
-
-                /// ボトムバー
-                ToolbarItem(placement: .bottomBar) {
-                    Button(action: {}) {
-                        Label("送信", systemImage: "paperplane")
-                    }
-                } // ToolbarItemここまで
-            } // .toolbarここまで
-        } // NavigationViewここまで
+                .accentColor(.green) //ここで色の指定
     } // bodyここまで
 } // ContentViewここまで
 
